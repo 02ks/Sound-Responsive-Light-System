@@ -1,6 +1,7 @@
 void setup() {
   // put your setup code here, to run once:
-  int number = 123;
+  int number = 12345;
+  //12
 }
 
 void loop() {
