@@ -14,8 +14,6 @@ void loop() {
   unsigned int signalMin = maxvol;
   
   knock = analogRead(0);
-  
-  
   if (knock < maxvol)  //This is the max of the 10-bit ADC so this loop will include all readings
        {
           if (knock > signalMax)
@@ -35,6 +33,6 @@ void loop() {
   Serial.print(volts);
   Serial.print('\n');
   
-  delay(500);
+  delay(2000);
   
 }
