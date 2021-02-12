@@ -1,4 +1,4 @@
-const int sampleWindow = 250; // Sample window width in mS (250 mS = 4Hz)
+const int sampleWindow = 5000; // Sample window width in mS (250 mS = 4Hz)
 unsigned int knock;
 int ledPinRed = 6;
 int ledPinGreen = 7;
