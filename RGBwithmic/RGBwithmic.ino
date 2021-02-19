@@ -50,7 +50,7 @@ void loop() {
   knock = analogRead(0);
   double volts = (knock * 5) / maxvol;  // convert to volts
   Serial.println(volts);
-  if (volts < 2.2) { //might need to change this variable
+  if (volts < 2.3) { //might need to change this variable
     clapcount = clapcount + 1;
     Serial.println(clapcount);
     delay(500);
