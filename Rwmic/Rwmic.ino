@@ -21,6 +21,7 @@ void loop()
   while (millis() - start < sampleWindow)
   {
     knock = analogRead(0);
+    Serial.println(knock);
       if (knock < 1024)  //This is the max of the 10-bit ADC so this loop will include all readings
       {
          if (knock > signalMax)
@@ -32,10 +33,11 @@ void loop()
            signalMin = knock;  // save just the min levels
          }
       }
- }
- peakToPeak = signalMax - signalMin;  // max - min = peak-peak amplitude
- double volts = (peakToPeak * 3.3) / 1024;  // convert to volts
-
+  }
+  peakToPeak = signalMax - signalMin;  // max - min = peak-peak amplitude
+  double volts = (peakToPeak * 3.3) / 1024;  // convert to volts
+  Serial.print(volts);
+ 
 
   Serial.println(volts);
   if (volts >=1.0)
