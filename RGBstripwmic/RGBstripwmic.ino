@@ -26,7 +26,8 @@ unsigned int knock;
 int clapcount = 0;
 
 void setup() {
-
+  
+  Serial.begin(9600);
 #if defined(__AVR_ATtiny85__) && (F_CPU == 16000000)
   clock_prescale_set(clock_div_1);
 #endif
@@ -41,18 +42,40 @@ void setup() {
 // loop() function -- runs repeatedly as long as board is on ---------------
 
 void loop() {
-  // Fill along the length of the strip in various colors...
-  colorWipe(strip.Color(255,   0,   0), 50); // Red
-  colorWipe(strip.Color(  0, 255,   0), 50); // Green
-  colorWipe(strip.Color(  0,   0, 255), 50); // Blue
+  double maxvol = 1024;
+  unsigned long start = millis(); // Start of sample window
+  unsigned int peakToPeak = 0;   // peak-to-peak level
 
-  // Do a theater marquee effect in various colors...
-  theaterChase(strip.Color(127, 127, 127), 50); // White, half brightness
-  theaterChase(strip.Color(127,   0,   0), 50); // Red, half brightness
-  theaterChase(strip.Color(  0,   0, 127), 50); // Blue, half brightness
+  unsigned int signalMax = 0;
+  unsigned int signalMin = maxvol;
 
-  rainbow(10);             // Flowing rainbow cycle along the whole strip
-  theaterChaseRainbow(50); // Rainbow-enhanced theaterChase variant
+  // collect data for 250 miliseconds
+ 
+  knock = analogRead(0);
+  double volts = (knock * 5) / maxvol;  // convert to volts
+  Serial.println(volts);
+  if (volts < 1) { //might need to change this variable
+    clapcount = clapcount + 1;
+    Serial.println(clapcount);
+    delay(500);
+    if (clapcount > 0) {
+      if (clapcount == 1) {
+        colorWipe(strip.Color(  0,   0, 255), 50); // Blue
+        delay(1000);
+      }
+      /**else if (clapcount == 2) {
+        delay(1000);
+      }
+      else if (clapcount == 3) {
+        delay(1000);
+      }**/
+      else {
+        clapcount = 0;
+        colorWipe(strip.Color(  0,   0,  0), 50); // Blue
+        delay(1000);
+      }
+    }
+  }
 }
 
 
