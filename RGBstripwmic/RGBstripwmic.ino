@@ -66,7 +66,7 @@ void loop() {
     delay(500);
     if (clapcount > 0) {
       if (clapcount == 1) {
-        FadeInOut();
+        boxINboxOUT(strip.Color(100,0,0), 50);
       }
       /**else if (clapcount == 2) {
         rainbow(50);
@@ -76,7 +76,6 @@ void loop() {
         }**/
       else {
         clapcount = 0;
-        FadeInOut();
         //colorWipe(strip.Color(  0,   0,  0), 10); // Blue
       }
     }
@@ -107,7 +106,7 @@ void setAll(byte red, byte green, byte blue) {
   showStrip();
 }
 
-void FadeInOut(){
+void FadeInOut(int layer){
   float r, g, b;
   int red1 = random(0,255);
   int green1 = random(0,255);
@@ -116,19 +115,58 @@ void FadeInOut(){
     r = (k/256.0)*red1;
     g = (k/256.0)*green1;
     b = (k/256.0)*blue1;
-    setAll(r,g,b);
-    showStrip();
+    strip.setPixelColor(layer, strip.Color(r,g,b));
+    showStrip(); 
   }
-     
+  
   for(int k = 255; k >= 0; k=k-2) {
     r = (k/256.0)*red1;
     g = (k/256.0)*green1;
     b = (k/256.0)*blue1;
-    setAll(r,g,b);
+    strip.setPixelColor(layer, strip.Color(r,g,b));
     showStrip();
   }
+  
 }
-
+void boxINboxOUT(uint32_t color, int wait) {
+  int layer1 = 24;
+  int layer2 [] = { 16,17,18,23,25,30,31,32 }; //length 0 to 8
+  int layer3 [] = { 8,9,10,11,12,15,19,22,26,29,33,36,37,38,39,40 }; //length 0 to 15
+  int layer4 [] = { 0,1,2,3,4,5,6,7,13,14,20,21,27,28,34,35,41,42,43,44,45,46,47,48 }; //length 0 to 23
+  strip.setPixelColor(layer1, color);
+  strip.show();
+  delay(wait);
+  FadeInOut(layer2);
+  for( int i = 0; i < 9; i++){
+     
+  }
+  strip.show();
+  delay(wait);
+  for( int i = 0; i < 16; i++) {
+    FadeInOut(layer3[i]);
+  }
+  strip.show();
+  delay(wait);
+  for( int i = 0; i < 24; i++) {
+    FadeInOut(layer4[i]);
+  }
+  strip.show();
+  delay(wait);
+  for( int i = 0; i < 24; i++) {
+    FadeInOut(layer4[i]);
+  }
+  strip.show();
+  delay(wait);
+  for( int i = 0; i < 16; i++) {
+    FadeInOut(layer3[i]);
+  }
+  strip.show();
+  delay(wait);
+  for( int i = 0; i < 9; i++) {
+    FadeInOut(layer2[i]);
+  }
+  strip.show();
+}
 void colorOn(int wait) {
   while (fun < 50) {
     fun = fun + 1;
