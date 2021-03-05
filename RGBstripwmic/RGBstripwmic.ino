@@ -82,7 +82,7 @@ void loop() {
       else {
         clapcount = 0;
         colorWipe(strip.Color(  0,   0,  0), 10); // Blue
-        int blank = getLEDpos(3, 4);
+        int blank = XYsafe(3, 4);
         setPixel(blank, 0, 100, 200);
         delay(100);
         colorWipe(strip.Color(  0,   0,  0), 10); // Blue
@@ -93,10 +93,18 @@ void loop() {
 void showStrip() {
   strip.show();
 }
+
+uint16_t XYsafe( uint8_t x, uint8_t y)
+{
+  if( x >= 7) return -1;
+  if( y >= 7) return -1;
+  return getLEDpos(x,y);
+}
+
 int getLEDpos(int x, int y){ // for a serpentine raster
    int pos;
    if(x & 0x1) { // is X odd
-      pos = x * 7 + (7 - 1 - y) ;
+      pos = x * 7 + (6 - y) ;
    } else { // x is even
       pos = x * 7 + y;
    }
