@@ -1,12 +1,10 @@
 #include <Adafruit_NeoPixel.h>
-#ifdef __AVR__
-#include <avr/power.h> // Required for 16 MHz Adafruit Trinket
-#endif
 
 #define LED_PIN    6
 
 // How many NeoPixels are attached to the Arduino?
-#define LED_COUNT 60
+#define LED_COUNT 49
+#define NUM_LEDS 49
 
 // Declare our NeoPixel strip object:
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
@@ -33,10 +31,6 @@ int fun = 0;
 void setup() {
 
   Serial.begin(9600);
-#if defined(__AVR_ATtiny85__) && (F_CPU == 16000000)
-  clock_prescale_set(clock_div_1);
-#endif
-  // END of Trinket-specific code.
 
   strip.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
   strip.show();            // Turn OFF all pixels ASAP
@@ -65,25 +59,25 @@ void loop() {
   knocktotal = knock1 + knock2 + knock3 + knock4 + knock5;
   double volts = (knocktotal) / maxvol;  // convert to volts
   Serial.println(volts);
-  delay(100);
-  if (volts < 2.4) { //might need to change this variable
+  if (volts < 2.2) { //might need to change this variable
 
     clapcount = clapcount + 1;
     Serial.println(clapcount);
     delay(500);
     if (clapcount > 0) {
       if (clapcount == 1) {
-        colorOn(50); // Blue
+        FadeInOut();
       }
       /**else if (clapcount == 2) {
-
+        rainbow(50);
       }
       /**else if (clapcount == 3) {
         delay(1000);
         }**/
       else {
         clapcount = 0;
-        colorWipe(strip.Color(  0,   0,  0), 50); // Blue
+        FadeInOut();
+        //colorWipe(strip.Color(  0,   0,  0), 10); // Blue
       }
     }
   }
@@ -97,6 +91,44 @@ void loop() {
 // (as a single 'packed' 32-bit value, which you can get by calling
 // strip.Color(red, green, blue) as shown in the loop() function above),
 // and a delay time (in milliseconds) between pixels.
+void showStrip() {
+   strip.show();
+}
+
+void setPixel(int Pixel, byte red, byte green, byte blue) {
+   strip.setPixelColor(Pixel, strip.Color(red, green, blue));
+
+}
+
+void setAll(byte red, byte green, byte blue) {
+  for(int i = 0; i < NUM_LEDS; i++ ) {
+    setPixel(i, red, green, blue);
+  }
+  showStrip();
+}
+
+void FadeInOut(){
+  float r, g, b;
+  int red1 = random(0,255);
+  int green1 = random(0,255);
+  int blue1 = random(0,255);
+  for(int k = 0; k < 256; k=k+1) {
+    r = (k/256.0)*red1;
+    g = (k/256.0)*green1;
+    b = (k/256.0)*blue1;
+    setAll(r,g,b);
+    showStrip();
+  }
+     
+  for(int k = 255; k >= 0; k=k-2) {
+    r = (k/256.0)*red1;
+    g = (k/256.0)*green1;
+    b = (k/256.0)*blue1;
+    setAll(r,g,b);
+    showStrip();
+  }
+}
+
 void colorOn(int wait) {
   while (fun < 50) {
     fun = fun + 1;
