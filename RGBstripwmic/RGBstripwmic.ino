@@ -72,6 +72,10 @@ void loop() {
       if (clapcount == 1) {
         colorWipe(strip.Color(  0,   0,  0), 10); // Blue
         boxINboxOUT(256, 256, 256, 50);
+        delay(100);
+        namecallout(strip.Color(50,50,50), 1000);
+        delay(100);
+        colorWipe(strip.Color(  0,   0,  0), 10); // Blue
       }
       /**else if (clapcount == 2) {
         rainbow(50);
@@ -101,7 +105,7 @@ uint16_t XYsafe( uint8_t x, uint8_t y)
   return getLEDpos(x,y);
 }
 
-int getLEDpos(int x, int y){ // for a serpentine raster
+int getLEDpos(int x, int y){ 
    int pos;
    if(x & 0x1) { // is X odd
       pos = x * 7 + (6 - y) ;
@@ -148,6 +152,31 @@ void setAll(byte red, byte green, byte blue) {
     showStrip();
   }
   }**/
+void namecallout(uint32_t color, int wait) {
+  int Kogan[] = {9,11,17,18,23,31,32,37,39}; //Length 0 to 8
+  int Matthew[] = {8,12,15,19,22,24,26,29,30,32,33,36,40};//length 0 to 12
+  int Ethan[] = {9,10,11,18,23,24,25,32,37,38,39}; // length 0 to 10
+
+  for( int i = 0; i < 9; i++) {
+    strip.setPixelColor(Kogan[i], color);
+  }
+  strip.show();
+  delay(wait);
+  strip.clear();
+  for( int i = 0; i < 13; i++) {
+    strip.setPixelColor(Matthew[i], color); 
+  }
+  strip.show();
+  delay(wait);
+  strip.clear();
+  for( int i = 0; i < 11; i++) {
+    strip.setPixelColor(Ethan[i], color);
+  }
+  strip.show();
+  delay(wait);
+  strip.clear(); 
+  
+}
 
 void FadeInOut2(int arr[], int size, int red, int green, int blue, int test) {
   float r, g, b;
@@ -215,23 +244,24 @@ void colorOn(int wait) {
     int g = rand() % 255;
     int b = rand() % 255;
     uint32_t color = strip.Color(  r,   g,  b);
-    strip.setPixelColor(i, color);         //  Set pixel's color (in RAM)
-    strip.show();   //  Update strip to match
-    strip.setPixelColor(i2, color);         //  Set pixel's color (in RAM)
-    strip.show();   //  Update strip to match
-    strip.setPixelColor(i3, color);         //  Set pixel's color (in RAM)
-    strip.show();   //  Update strip to match
-    strip.setPixelColor(i4, color);         //  Set pixel's color (in RAM)
-    strip.show();   //  Update strip to match
+    strip.setPixelColor(i, color);         
+    strip.show();   
+    strip.setPixelColor(i2, color);       
+    strip.show(); 
+    strip.setPixelColor(i3, color);    
+    strip.show();  
+    strip.setPixelColor(i4, color);     
+    strip.show(); 
     delay(50);
-    strip.clear();         //  Set pixel's color (in RAM)
-    strip.show();   //  Update strip to match
+    strip.clear();       
+    strip.show();  
     delay(wait);
   }
   if (fun >= 50) {
     fun = 0;
   }
 }
+
 void colorWipe(uint32_t color, int wait) {
   for (int i = 0; i < strip.numPixels(); i++) { // For each pixel in strip...
     strip.setPixelColor(i, color);         //  Set pixel's color (in RAM)
@@ -239,6 +269,8 @@ void colorWipe(uint32_t color, int wait) {
     delay(wait);                           //  Pause for a moment
   }
 }
+
+//NOTE: Everything from here down is example code from the NEOPIXELS library; Used for testing
 
 // Theater-marquee-style chasing lights. Pass in a color (32-bit value,
 // a la strip.Color(r,g,b) as mentioned above), and a delay time (in ms)
