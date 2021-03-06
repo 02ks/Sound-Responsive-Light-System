@@ -1,4 +1,5 @@
 #include <Adafruit_NeoPixel.h>
+//#include <FastLED.h>
 
 #define LED_PIN    6
 
@@ -70,17 +71,18 @@ void loop() {
     delay(500);
     if (clapcount > 0) {
       if (clapcount == 1) {
-        colorWipe(strip.Color(  0,   0,  0), 10); // Blue
         boxINboxOUT(256, 256, 256, 50);
         delay(100);
-        namecallout(strip.Color(50,50,50), 1000);
+        namecallout(strip.Color(50, 50, 50), 1000);
         delay(100);
         colorWipe(strip.Color(  0,   0,  0), 10); // Blue
       }
-      /**else if (clapcount == 2) {
-        rainbow(50);
-        }
-        /**else if (clapcount == 3) {
+      else if (clapcount == 2) {
+        colorOn(50);
+        delay(100);
+        colorWipe(strip.Color(  0,   0,  0), 10); // Blue
+      }
+      /**else if (clapcount == 3) {
         delay(1000);
         }**/
       else {
@@ -94,25 +96,28 @@ void loop() {
     }
   }
 }
+void rainbow2(uint8_t wait) {
+}
+
 void showStrip() {
   strip.show();
 }
 
 uint16_t XYsafe( uint8_t x, uint8_t y)
 {
-  if( x >= 7) return -1;
-  if( y >= 7) return -1;
-  return getLEDpos(x,y);
+  if ( x >= 7) return -1;
+  if ( y >= 7) return -1;
+  return getLEDpos(x, y);
 }
 
-int getLEDpos(int x, int y){ 
-   int pos;
-   if(x & 0x1) { // is X odd
-      pos = x * 7 + (6 - y) ;
-   } else { // x is even
-      pos = x * 7 + y;
-   }
-   return pos;
+int getLEDpos(int x, int y) {
+  int pos;
+  if (x & 0x1) { // is X odd
+    pos = x * 7 + (6 - y) ;
+  } else { // x is even
+    pos = x * 7 + y;
+  }
+  return pos;
 }
 
 void setPixel(int Pixel, byte red, byte green, byte blue) {
@@ -127,6 +132,15 @@ void setAll(byte red, byte green, byte blue) {
   showStrip();
 }
 
+
+void betterRainbow(byte startHue8, int8_t yHueDelta8, int8_t xHueDelta8) {
+
+  for ( byte y = 0; y < 7; y++) {
+
+    for ( byte x = 0; x < 7; x++) {
+    }
+  }
+}
 /**void FadeInOut(int arr[], int size){
   float r, g, b;
   int red1 = random(0,255);
@@ -153,29 +167,29 @@ void setAll(byte red, byte green, byte blue) {
   }
   }**/
 void namecallout(uint32_t color, int wait) {
-  int Kogan[] = {9,11,17,18,23,31,32,37,39}; //Length 0 to 8
-  int Matthew[] = {8,12,15,19,22,24,26,29,30,32,33,36,40};//length 0 to 12
-  int Ethan[] = {9,10,11,18,23,24,25,32,37,38,39}; // length 0 to 10
+  int Kogan[] = {9, 11, 17, 18, 23, 31, 32, 37, 39}; //Length 0 to 8
+  int Matthew[] = {8, 12, 15, 19, 22, 24, 26, 29, 30, 32, 33, 36, 40}; //length 0 to 12
+  int Ethan[] = {9, 10, 11, 18, 23, 24, 25, 32, 37, 38, 39}; // length 0 to 10
 
-  for( int i = 0; i < 9; i++) {
+  for ( int i = 0; i < 9; i++) {
     strip.setPixelColor(Kogan[i], color);
   }
   strip.show();
   delay(wait);
   strip.clear();
-  for( int i = 0; i < 13; i++) {
-    strip.setPixelColor(Matthew[i], color); 
+  for ( int i = 0; i < 13; i++) {
+    strip.setPixelColor(Matthew[i], color);
   }
   strip.show();
   delay(wait);
   strip.clear();
-  for( int i = 0; i < 11; i++) {
+  for ( int i = 0; i < 11; i++) {
     strip.setPixelColor(Ethan[i], color);
   }
   strip.show();
   delay(wait);
-  strip.clear(); 
-  
+  strip.clear();
+
 }
 
 void FadeInOut2(int arr[], int size, int red, int green, int blue, int test) {
@@ -244,17 +258,17 @@ void colorOn(int wait) {
     int g = rand() % 255;
     int b = rand() % 255;
     uint32_t color = strip.Color(  r,   g,  b);
-    strip.setPixelColor(i, color);         
-    strip.show();   
-    strip.setPixelColor(i2, color);       
-    strip.show(); 
-    strip.setPixelColor(i3, color);    
-    strip.show();  
-    strip.setPixelColor(i4, color);     
-    strip.show(); 
+    strip.setPixelColor(i, color);
+    strip.show();
+    strip.setPixelColor(i2, color);
+    strip.show();
+    strip.setPixelColor(i3, color);
+    strip.show();
+    strip.setPixelColor(i4, color);
+    strip.show();
     delay(50);
-    strip.clear();       
-    strip.show();  
+    strip.clear();
+    strip.show();
     delay(wait);
   }
   if (fun >= 50) {
