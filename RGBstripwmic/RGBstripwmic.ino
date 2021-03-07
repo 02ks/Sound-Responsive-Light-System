@@ -71,6 +71,7 @@ void loop() {
     delay(500);
     if (clapcount > 0) {
       if (clapcount == 1) {
+        //betterRainbow(1);
         boxINboxOUT(256, 256, 256, 50);
         delay(100);
         namecallout(strip.Color(50, 50, 50), 1000);
@@ -82,12 +83,12 @@ void loop() {
         delay(100);
         colorWipe(strip.Color(  0,   0,  0), 10); // Blue
       }
-      /**else if (clapcount == 3) {
-        delay(1000);
-        }**/
+      else if (clapcount == 3) {
+        betterRainbow(1);
+        colorWipe(strip.Color(  0,   0,  0), 10); // Blue
+      }
       else {
         clapcount = 0;
-        colorWipe(strip.Color(  0,   0,  0), 10); // Blue
         int blank = XYsafe(3, 4);
         setPixel(blank, 0, 100, 200);
         delay(100);
@@ -96,6 +97,7 @@ void loop() {
     }
   }
 }
+
 void rainbow2(uint8_t wait) {
 }
 
@@ -133,12 +135,28 @@ void setAll(byte red, byte green, byte blue) {
 }
 
 
-void betterRainbow(byte startHue8, int8_t yHueDelta8, int8_t xHueDelta8) {
 
-  for ( byte y = 0; y < 7; y++) {
+void betterRainbow(int wait) {
 
-    for ( byte x = 0; x < 7; x++) {
+  for (long firstPixelHue = 0; firstPixelHue < 5 * 65536; firstPixelHue += 100) {
+    uint32_t ms = millis();
+    for ( byte y = 0; y < 7; y++) {
+      for ( byte x = 0; x < 7; x++) {
+        // Offset pixel hue by an amount to make one full revolution of the
+        // color wheel (range of 65536) along the length of the strip
+        // (strip.numPixels() steps):
+        int pixelHue = firstPixelHue + x * 65536L / 49 + y * 65536L / 49;
+        // strip.ColorHSV() can take 1 or 3 arguments: a hue (0 to 65535) or
+        // optionally add saturation and value (brightness) (each 0 to 255).
+        // Here we're using just the single-argument hue variant. The result
+        // is passed through strip.gamma32() to provide 'truer' colors
+        // before assigning to each pixel:
+
+        strip.setPixelColor( XYsafe(x, y), strip.gamma32(strip.ColorHSV(pixelHue)));
+      }
     }
+    strip.show(); // Update strip with new contents
+    delay(wait);  // Pause for a moment
   }
 }
 /**void FadeInOut(int arr[], int size){
