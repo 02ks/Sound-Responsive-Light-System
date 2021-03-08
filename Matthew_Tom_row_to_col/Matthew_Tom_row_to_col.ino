@@ -88,6 +88,6 @@ void transition_RowToCol(uint32_t color, int wait) {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  transition_RowToCol(strip.Color(123,100,50), 500);
+  transition_RowToCol(strip.Color(50,50,50), 500);
   delay(1000);
 }
