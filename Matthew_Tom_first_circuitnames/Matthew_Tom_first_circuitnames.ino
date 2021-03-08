@@ -23,8 +23,13 @@ void setup() {
 }
 
 void namecallout(uint32_t color, int wait) {
+<<<<<<< Updated upstream
   int Kogan[] = {9,11,17,18,23,31,32,37,39}; //Length 0 to 8
   int Matthew[] = {8,12,15,19,22,24,26,29,30,32,33,36,40};//length 0 to 12
+=======
+  int Kogan[] = {9,11,17,18,25,31,32,37,39}; //Length 0 to 8
+  int Matthew[] = {8,12,15,19,22,24,26,29,30,32,33,36,40};//length 0 to 11
+>>>>>>> Stashed changes
   int Ethan[] = {9,10,11,18,23,24,25,32,37,38,39}; // length 0 to 10
 
   for( int i = 0; i < 9; i++) {
