@@ -76,6 +76,8 @@ void loop() {
         delay(100);
         namecallout(strip.Color(50, 50, 50), 1000);
         delay(100);
+        heartpattern(strip.Color(50,50,50), 800);
+        delay(100);
         colorWipe(strip.Color(  0,   0,  0), 10); // Blue
       }
       else if (clapcount == 2) {
