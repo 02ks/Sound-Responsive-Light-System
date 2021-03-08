@@ -301,7 +301,11 @@ void colorWipe(uint32_t color, int wait) {
     delay(wait);                           //  Pause for a moment
   }
 }
-
+void heartpattern(uint32_t color, int wait) {
+  int heart[] = {2,3,9,10,11,12,15,16,17,18,19,21,22,23,24,25,29,30,31,32,33,37,38,39,40,44,45};
+  strip.setPixelColor(heart, color);
+  strip.show();
+}
 //NOTE: Everything from here down is example code from the NEOPIXELS library; Used for testing
 
 // Theater-marquee-style chasing lights. Pass in a color (32-bit value,
