@@ -91,8 +91,7 @@ void loop() {
       }
       else {
         clapcount = 0;
-        int blank = XYsafe(3, 4);
-        setPixel(blank, 0, 100, 200);
+        
         delay(100);
         colorWipe(strip.Color(  0,   0,  0), 10); // Blue
       }
