@@ -45,6 +45,7 @@ void transition_RowToCol(uint32_t color, int wait) {
   for( int i = 0; i < 6; i++) {
     for( int j = 0; i < 6; j++) {
       strip.setPixelColor(row[i][j], color); 
+      Serial.println(row[i][j]);
     }
     strip.show();
     delay(wait);
@@ -54,6 +55,7 @@ void transition_RowToCol(uint32_t color, int wait) {
   for( int i = 6; i < 6; i--) {
     for( int j = 0; i < 6; j++) {
       strip.setPixelColor(row[i][j], color); 
+      Serial.println(row[i][j]);
     }
     strip.show();
     delay(wait);
@@ -64,6 +66,7 @@ void transition_RowToCol(uint32_t color, int wait) {
   for( int i = 0; i < 6; i++) {
     for( int j = 0; i < 6; j++) {
       strip.setPixelColor(col[i][j], color); 
+      Serial.println(col[i][j]);
     }
     strip.show();
     delay(wait);
@@ -73,6 +76,7 @@ void transition_RowToCol(uint32_t color, int wait) {
   for( int i = 6; i < 6; i--) {
     for( int j = 0; i < 6; j++) {
       strip.setPixelColor(col[i][j], color); 
+      Serial.println(col[i][j]);
     }
     strip.show();
     delay(wait);
