@@ -19,12 +19,10 @@ void setup() {
   strip.begin();
   strip.show();
   strip.setBrightness(50);
-
-  
   
 }
 
- void transition_RowToCol(uint32_t color, int wait) {
+void transition_RowToCol(uint32_t color, int wait) {
   int row[7][7] = {
     {0,1,2,3,4,5,6},
    {7,8,9,10,11,12,13},
@@ -93,6 +91,6 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  transition_RowToCol(strip.Color(50,50,50), 500);
-  delay(1000);
+  transition_RowToCol(strip.Color(50,50,50), 1000);
+  delay(10000);
 } 
