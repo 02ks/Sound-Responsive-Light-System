@@ -66,7 +66,7 @@ void transition_RowToCol(uint32_t color, int wait) {
   
   //col escalation
   for( int i = 0; i < 7; i++) {
-    for( int j = 0; j < 7; j++) {
+    for( int j = 6; j >= 0; j--) {
       strip.setPixelColor(col[i][j], color); 
       Serial.println(col[i][j]);
     }
