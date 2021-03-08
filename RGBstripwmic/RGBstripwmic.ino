@@ -74,9 +74,9 @@ void loop() {
         //betterRainbow(1);
         boxINboxOUT(256, 256, 256, 50);
         delay(100);
-        namecallout(strip.Color(50, 50, 50), 1000);
+        namecallout(strip.Color(100, 100, 100), 1000);
         delay(100);
-        heartpattern(strip.Color(50,50,50), 800);
+        heartpattern(150, 30, 30, 800);
         delay(100);
         colorWipe(strip.Color(  0,   0,  0), 10); // Blue
       }
@@ -303,10 +303,14 @@ void colorWipe(uint32_t color, int wait) {
     delay(wait);                           //  Pause for a moment
   }
 }
-void heartpattern(uint32_t color, int wait) {
-  int heart[] = {2,3,9,10,11,12,15,16,17,18,19,21,22,23,24,25,29,30,31,32,33,37,38,39,40,44,45};
-  strip.setPixelColor(heart, color);
+void heartpattern(int red, int green, int blue, int wait) {
+  int heart[] = {2,3,9,12,15,19,21,25,29,33,37,40,44,45};
+  FadeInOut2(heart, 14, red, green, blue, 1);
   strip.show();
+  delay(wait);
+  FadeInOut2(heart, 14, red, green, blue, 2);
+  strip.show();
+  delay(wait);
 }
 //NOTE: Everything from here down is example code from the NEOPIXELS library; Used for testing
 
