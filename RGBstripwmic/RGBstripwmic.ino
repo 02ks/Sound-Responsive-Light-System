@@ -327,6 +327,7 @@ void ece5(int red, int green, int blue, int wait) {
   strip.show();
   delay(500);
   FadeInOut2(ece55, 19 , red, green, blue, 1);
+  delay(wait);
 }
 
 //NOTE: Everything from here down is example code from the NEOPIXELS library; Used for testing
