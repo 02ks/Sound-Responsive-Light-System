@@ -314,10 +314,10 @@ void heartpattern(int red, int green, int blue, int wait) {
   delay(wait);
 }
 void ece5(int red, int green, int blue, int wait) {
-  int ece5E[] = {0,1,2,3,4,5,6,13,20,27,34,41,48,26,25,24,23,22,21};
-  int ece5C[] = {0,1,2,3,4,12,19,26,33,40,46,45,44,43,42};
-  int ece55[] = {42,43,45,46,47,40,33,32,31,30,29,21,14,7,1,2,3,4,5};
-  FadeInOut2(ece5E, 19, red, green, blue, 1);
+  int ece5E[] = {0,1,2,3,4,5,6,7,20,21,22,23,24,25,26,27,34,35,42,43,44,45,46,47,48};
+  int ece5C[] = {0,1,2,3,4,8,19,22,33,36,42,43,44,45,46};
+  int ece55[] = {1,2,3,4,5,6,13,14,27,29,30,31,32,33,34,35,42,43,44,45,46,47,48};
+  FadeInOut2(ece5E, 25, red, green, blue, 1);
   strip.show();
   strip.clear();
   delay(500);
@@ -325,11 +325,11 @@ void ece5(int red, int green, int blue, int wait) {
   strip.show();
   strip.clear();
   delay(500);
-  FadeInOut2(ece5E, 19 , red, green, blue, 1);
+  FadeInOut2(ece5E, 25 , red, green, blue, 1);
   strip.show();
   strip.clear();
   delay(500);
-  FadeInOut2(ece55, 19 , red, green, blue, 1);
+  FadeInOut2(ece55, 23 , red, green, blue, 1);
   strip.show();
   strip.clear();
   delay(wait);
