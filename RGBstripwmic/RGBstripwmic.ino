@@ -319,14 +319,19 @@ void ece5(int red, int green, int blue, int wait) {
   int ece55[] = {42,43,45,46,47,40,33,32,31,30,29,21,14,7,1,2,3,4,5};
   FadeInOut2(ece5E, 19, red, green, blue, 1);
   strip.show();
+  strip.clear();
   delay(500);
   FadeInOut2(ece5C, 15, red, green, blue, 2);
   strip.show();
+  strip.clear();
   delay(500);
   FadeInOut2(ece5E, 19 , red, green, blue, 1);
   strip.show();
+  strip.clear();
   delay(500);
   FadeInOut2(ece55, 19 , red, green, blue, 1);
+  strip.show();
+  strip.clear();
   delay(wait);
 }
 
