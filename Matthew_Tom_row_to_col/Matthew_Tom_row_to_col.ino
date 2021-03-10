@@ -22,14 +22,24 @@ void setup() {
   
 }
 
+int getLEDpos(int x, int y) {
+  int pos;
+  if (x & 0x1) { // is X odd
+    pos = x * 7 + (6 - y) ;
+  } else { // x is even
+    pos = x * 7 + y;
+  }
+  return pos;
+}
+
 void transition_RowToCol(uint32_t color, int wait) {
   int row[7][7] = {
     {0,1,2,3,4,5,6},
-   {7,8,9,10,11,12,13},
+   {13,12,11,10,9,8,7},
    {14,15,16,17,18,19,20},
-   {21,22,23,24,25,26,27},
+   {27,26,25,24,23,22,21},
    {28,29,30,31,32,33,34},
-   {35,36,37,38,39,40,41},
+   {41,40,39,38,37,36,35},
    {42,43,44,45,46,47,48}
    };
   int col[7][7] = {
@@ -42,29 +52,29 @@ void transition_RowToCol(uint32_t color, int wait) {
     {6,7,20,21,34,35,48}
   };
   
-  //row escalation
-  for( int i = 0; i < 7; i++) {
-    for( int j = 0; j < 7; j++) {
-      strip.setPixelColor(row[i][j], color); 
-      Serial.println(row[i][j]);
-    }
-    strip.show();
-    delay(wait);
-    strip.clear();
-  }
-  //row de-escalation
-  for( int i = 6; i >= 0; i--) { 
-    for( int j = 6; j >= 0; j--) {
-      strip.setPixelColor(row[i][j], color); 
-      Serial.println(row[i][j]);
-    }
-    strip.show();
-    delay(wait);
-    strip.clear();
-  }
-  delay(wait);
   
-  //col escalation
+  //row escalation
+  
+  for( int i = 0; i < 7; i++) {
+    int rand_row = random(0,6);
+    int rand_col = random(0,6);
+    for( int j = 0; j < 7; j++) {
+      strip.setPixelColor(row[rand_row][j], color); 
+      Serial.println(row[i][j]);
+      strip.setPixelColor(col[rand_col][j], color); 
+      Serial.println(col[i][j]);
+      if (getLEDpos(rand_row+1, j+1) == getLEDpos(j+1, rand_col+1)) {
+        strip.setPixelColor(row[rand_row][j], strip.Color(50,0,0)); 
+        strip.setPixelColor(col[rand_col][j], strip.Color(50,0,0));
+      }
+      
+    }
+    strip.show();
+    delay(wait);
+    strip.clear();
+  }
+  
+  /**
   for( int i = 0; i < 7; i++) { //version 2.0
     for( int j = 6; j >= 0; j--) {
       strip.setPixelColor(col[i][j], color); 
@@ -84,6 +94,18 @@ void transition_RowToCol(uint32_t color, int wait) {
     delay(wait);
     strip.clear();
   }
+
+  //row de-escalation
+  for( int i = 6; i >= 0; i--) { 
+    for( int j = 6; j >= 0; j--) {
+      strip.setPixelColor(row[i][j], color); 
+      Serial.println(row[i][j]);
+    }
+    strip.show();
+    delay(wait);
+    strip.clear();
+  }
+  delay(wait);**/
   
   
   
@@ -91,6 +113,6 @@ void transition_RowToCol(uint32_t color, int wait) {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  transition_RowToCol(strip.Color(50,50,50), 1000); //new color
-  delay(10000);
+  transition_RowToCol(strip.Color(50,50,50), 500); //new color
+  delay(100);
 } 
