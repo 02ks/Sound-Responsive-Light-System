@@ -71,29 +71,39 @@ void loop() {
     delay(500);
     if (clapcount > 0) {
       if (clapcount == 1) {
-        //betterRainbow(1);
-        boxINboxOUT(256, 256, 256, 50);
+        boxINboxOUT(256, 256, 256, 1);
         delay(100);
         namecallout(strip.Color(100, 100, 100), 1000);
         delay(100);
-        ece5(120,80,200, 700); 
+        ece5(120, 80, 200, 700);
         delay(100);
         heartpattern(150, 30, 30, 800);
         delay(100);
         colorWipe(strip.Color(  0,   0,  0), 10); // Blue
       }
       else if (clapcount == 2) {
-        colorOn(50);
+        transition_RowToCol(strip.Color(50, 50, 50), 200); //new color
+        delay(100);
+        transition_RowToCol(strip.Color(50, 50, 50), 200); //new color
+        delay(100);
+        transition_RowToCol2(strip.Color(50, 50, 50), 200); //new color
+        delay(100);
+        transition_RowToCol2(strip.Color(50, 50, 50), 200); //new color
         delay(100);
         colorWipe(strip.Color(  0,   0,  0), 10); // Blue
       }
       else if (clapcount == 3) {
+        colorOn(50);
+        delay(100);
+        colorWipe(strip.Color(  0,   0,  0), 10); // Blue
+      }
+      else if (clapcount == 4) {
         betterRainbow(1);
         colorWipe(strip.Color(  0,   0,  0), 10); // Blue
       }
       else {
         clapcount = 0;
-        
+        mood(100);
         delay(100);
         colorWipe(strip.Color(  0,   0,  0), 10); // Blue
       }
@@ -101,9 +111,28 @@ void loop() {
   }
 }
 
-void rainbow2(uint8_t wait) {
+void mood(uint8_t wait) {
+  for (long firstPixelHue = 0; firstPixelHue < 5 * 65536; firstPixelHue += 100) {
+    uint32_t ms = millis();
+    for ( byte y = 0; y < 7; y++) {
+      for ( byte x = 0; x < 7; x++) {
+        // Offset pixel hue by an amount to make one full revolution of the
+        // color wheel (range of 65536) along the length of the strip
+        // (strip.numPixels() steps):
+        int pixelHue = firstPixelHue + x * 65536L / 300 + y * 65536L / 300;
+        // strip.ColorHSV() can take 1 or 3 arguments: a hue (0 to 65535) or
+        // optionally add saturation and value (brightness) (each 0 to 255).
+        // Here we're using just the single-argument hue variant. The result
+        // is passed through strip.gamma32() to provide 'truer' colors
+        // before assigning to each pixel:
+        strip.setPixelColor( XYsafe(x, y), strip.gamma32(strip.ColorHSV(pixelHue)));
+        
+      }
+    }
+    strip.show(); // Update strip with new contents
+    delay(wait);  // Pause for a moment
+  }
 }
-
 void showStrip() {
   strip.show();
 }
@@ -305,7 +334,7 @@ void colorWipe(uint32_t color, int wait) {
   }
 }
 void heartpattern(int red, int green, int blue, int wait) {
-  int heart[] = {2,3,9,12,15,19,21,25,29,33,37,40,44,45};
+  int heart[] = {2, 3, 9, 12, 15, 19, 21, 25, 29, 33, 37, 40, 44, 45};
   FadeInOut2(heart, 14, red, green, blue, 1);
   strip.show();
   delay(wait);
@@ -314,14 +343,14 @@ void heartpattern(int red, int green, int blue, int wait) {
   delay(wait);
 }
 void ece5(int red, int green, int blue, int wait) {
-  int ece5E[] = {0,1,2,3,4,5,6,7,20,21,22,23,24,25,26,27,34,35,42,43,44,45,46,47,48};
-  int ece5C[] = {0,1,2,3,4,8,19,22,33,36,42,43,44,45,46};
-  int ece55[] = {1,2,3,4,5,6,13,14,27,29,30,31,32,33,34,35,42,43,44,45,46,47,48};
+  int ece5E[] = {0, 1, 2, 3, 4, 5, 6, 7, 20, 21, 22, 23, 24, 25, 26, 27, 34, 35, 42, 43, 44, 45, 46, 47, 48};
+  int ece5C[] = {0, 1, 2, 3, 4, 8, 19, 22, 33, 36, 42, 43, 44, 45, 46};
+  int ece55[] = {1, 2, 3, 4, 5, 6, 13, 14, 27, 29, 30, 31, 32, 33, 34, 35, 42, 43, 44, 45, 46, 47, 48};
   FadeInOut2(ece5E, 25, red, green, blue, 1);
   strip.show();
   strip.clear();
   delay(500);
-  FadeInOut2(ece5C, 15, red, green, blue, 2);
+  FadeInOut2(ece5C, 15, red, green, blue, 1);
   strip.show();
   strip.clear();
   delay(500);
@@ -335,6 +364,132 @@ void ece5(int red, int green, int blue, int wait) {
   delay(wait);
 }
 
+void transition_RowToCol(uint32_t color, int wait) {
+  int row[7][7] = {
+    {0, 1, 2, 3, 4, 5, 6},
+    {7, 8, 9, 10, 11, 12, 13},
+    {14, 15, 16, 17, 18, 19, 20},
+    {21, 22, 23, 24, 25, 26, 27},
+    {28, 29, 30, 31, 32, 33, 34},
+    {35, 36, 37, 38, 39, 40, 41},
+    {42, 43, 44, 45, 46, 47, 48}
+  };
+  int col[7][7] = {
+    {0, 13, 14, 27, 28, 41, 42},
+    {1, 12, 15, 26, 29, 40, 43},
+    {2, 11, 16, 25, 30, 39, 44},
+    {3, 10, 17, 24, 31, 38, 45},
+    {4, 9, 18, 23, 32, 37, 46},
+    {5, 8, 19, 22, 33, 36, 47},
+    {6, 7, 20, 21, 34, 35, 48}
+  };
+
+  //row escalation
+  for ( int i = 0; i < 7; i++) {
+    for ( int j = 0; j < 7; j++) {
+      strip.setPixelColor(row[i][j], color);
+      Serial.println(row[i][j]);
+    }
+    strip.show();
+    delay(wait);
+    strip.clear();
+  }
+  //row de-escalation
+  for ( int i = 6; i >= 0; i--) {
+    for ( int j = 6; j >= 0; j--) {
+      strip.setPixelColor(row[i][j], color);
+      Serial.println(row[i][j]);
+    }
+    strip.show();
+    delay(wait);
+    strip.clear();
+  }
+  delay(wait);
+
+  //col escalation
+  for ( int i = 0; i < 7; i++) { //version 2.0
+    for ( int j = 6; j >= 0; j--) {
+      strip.setPixelColor(col[i][j], color);
+      Serial.println(col[i][j]);
+    }
+    strip.show();
+    delay(wait);
+    strip.clear();
+  }
+  //col de-escalation
+  for ( int i = 6; i >= 0; i--) {
+    for ( int j = 6; j >= 0; j--) { //version 2.0
+      strip.setPixelColor(col[i][j], color);
+      Serial.println(col[i][j]);
+    }
+    strip.show();
+    delay(wait);
+    strip.clear();
+  }
+}
+void transition_RowToCol2(uint32_t color, int wait) {
+  int row[7][7] = {
+    {42, 1, 44, 3, 46, 5, 48},
+    {35, 8, 37, 10, 39, 12, 41},
+    {28, 15, 30, 17, 32, 19, 34},
+    {21, 22, 23, 24, 25, 26, 27},
+    {14, 29, 16, 31, 18, 33, 20},
+    {7, 36, 9, 38, 11, 40, 13},
+    {0, 43, 2, 45, 4, 47, 6}
+  };
+  int col[7][7] = {
+    {0, 7, 14, 21, 28, 35, 42},
+    {1, 8, 15, 22, 29, 36, 43},
+    {2, 9, 16, 23, 30, 37, 44},
+    {3, 10, 17, 24, 31, 38, 45},
+    {4, 11, 18, 25, 32, 39, 46},
+    {5, 12, 19, 26, 33, 40, 47},
+    {6, 13, 20, 27, 34, 41, 48}
+  };
+
+  //row escalation
+  for ( int i = 0; i < 7; i++) {
+    for ( int j = 0; j < 7; j++) {
+      strip.setPixelColor(row[i][j], color);
+      Serial.println(row[i][j]);
+    }
+    strip.show();
+    delay(wait);
+    strip.clear();
+  }
+  //row de-escalation
+  for ( int i = 6; i >= 0; i--) {
+    for ( int j = 6; j >= 0; j--) {
+      strip.setPixelColor(row[i][j], color);
+      Serial.println(row[i][j]);
+    }
+    strip.show();
+    delay(wait);
+    strip.clear();
+  }
+  delay(wait);
+
+  //col escalation
+  for ( int i = 0; i < 7; i++) { //version 2.0
+    for ( int j = 6; j >= 0; j--) {
+      strip.setPixelColor(col[i][j], color);
+      Serial.println(col[i][j]);
+    }
+    strip.show();
+    delay(wait);
+    strip.clear();
+  }
+  //col de-escalation
+  for ( int i = 6; i >= 0; i--) {
+    for ( int j = 6; j >= 0; j--) { //version 2.0
+      strip.setPixelColor(col[i][j], color);
+      Serial.println(col[i][j]);
+    }
+    strip.show();
+    delay(wait);
+    strip.clear();
+  }
+}
 //NOTE: Everything from here down is example code from the NEOPIXELS library; Used for testing
 
 // Theater-marquee-style chasing lights. Pass in a color (32-bit value,
