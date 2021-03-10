@@ -112,7 +112,7 @@ void loop() {
 }
 
 void mood(uint8_t wait) {
-  for (long firstPixelHue = 0; firstPixelHue < 5 * 65536; firstPixelHue += 100) {
+  for (long firstPixelHue = 0; firstPixelHue < 2 * 65536; firstPixelHue += 100) {
     uint32_t ms = millis();
     for ( byte y = 0; y < 7; y++) {
       for ( byte x = 0; x < 7; x++) {
